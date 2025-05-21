@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DiplomProject.Models.catalogue>
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.catalogid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.catalogname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.catalogimagepath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.catalogdesc)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.catalogid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catalogname)
+            </td>
+            <td>
+                <img src=@item.catalogimagepath alt=@item.catalogname />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.catalogdesc)
+            </td>
+        </tr>
+    }
+
+</table>

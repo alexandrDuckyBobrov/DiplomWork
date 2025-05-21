@@ -1,0 +1,42 @@
+﻿@model DiplomProject.Models.requests
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>requests</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.requestdesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requestdesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.requestfiles)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requestfiles)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.requeststatus.statusname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requeststatus.statusname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.requestid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

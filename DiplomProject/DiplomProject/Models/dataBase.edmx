@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище DIPLOMModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="catalogue">
+          <Key>
+            <PropertyRef Name="catalogid" />
+          </Key>
+          <Property Name="catalogid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="catalogname" Type="nvarchar" MaxLength="32" />
+          <Property Name="catalogimagepath" Type="nvarchar(max)" />
+          <Property Name="catalogdesc" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="requests">
+          <Key>
+            <PropertyRef Name="requestid" />
+          </Key>
+          <Property Name="requestid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="requestdesc" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="requestfiles" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="requeststatus">
+          <Key>
+            <PropertyRef Name="statusid" />
+          </Key>
+          <Property Name="statusid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="statusname" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="roleid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="rolename" Type="nvarchar" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="roleusers">
+          <Key>
+            <PropertyRef Name="users" />
+          </Key>
+          <Property Name="users" Type="int" Nullable="false" />
+          <Property Name="roles" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__requests__status__59063A47">
+          <End Role="requeststatus" Type="Self.requeststatus" Multiplicity="1" />
+          <End Role="requests" Type="Self.requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="requeststatus">
+              <PropertyRef Name="statusid" />
+            </Principal>
+            <Dependent Role="requests">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__roleusers__roles__5441852A">
+          <End Role="roles" Type="Self.roles" Multiplicity="0..1" />
+          <End Role="roleusers" Type="Self.roleusers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="roleid" />
+            </Principal>
+            <Dependent Role="roleusers">
+              <PropertyRef Name="roles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__roleusers__users__534D60F1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="roleusers" Type="Self.roleusers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="roleusers">
+              <PropertyRef Name="users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="role" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AddUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="GetLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+          <Parameter Name="password" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="GetUserRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="username" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Хранилище DIPLOMModelContainer">
+          <EntitySet Name="catalogue" EntityType="Self.catalogue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="requests" EntityType="Self.requests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="requeststatus" EntityType="Self.requeststatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="roleusers" EntityType="Self.roleusers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__requests__status__59063A47" Association="Self.FK__requests__status__59063A47">
+            <End Role="requeststatus" EntitySet="requeststatus" />
+            <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__roleusers__roles__5441852A" Association="Self.FK__roleusers__roles__5441852A">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="roleusers" EntitySet="roleusers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__roleusers__users__534D60F1" Association="Self.FK__roleusers__users__534D60F1">
+            <End Role="users" EntitySet="users" />
+            <End Role="roleusers" EntitySet="roleusers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DIPLOMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="catalogue">
+          <Key>
+            <PropertyRef Name="catalogid" />
+          </Key>
+          <Property Name="catalogid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="catalogname" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="catalogimagepath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="catalogdesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="requests">
+          <Key>
+            <PropertyRef Name="requestid" />
+          </Key>
+          <Property Name="requestid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="requestdesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="requestfiles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="requeststatus" Relationship="Self.FK__requests__status__59063A47" FromRole="requests" ToRole="requeststatus" />
+        </EntityType>
+        <EntityType Name="requeststatus">
+          <Key>
+            <PropertyRef Name="statusid" />
+          </Key>
+          <Property Name="statusid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="statusname" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="requests" Relationship="Self.FK__requests__status__59063A47" FromRole="requeststatus" ToRole="requests" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="roleid" />
+          </Key>
+          <Property Name="roleid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rolename" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="roleusers" Relationship="Self.FK__roleusers__roles__5441852A" FromRole="roles" ToRole="roleusers" />
+        </EntityType>
+        <EntityType Name="roleusers">
+          <Key>
+            <PropertyRef Name="users" />
+          </Key>
+          <Property Name="users" Type="Int32" Nullable="false" />
+          <Property Name="roles" Type="Int32" />
+          <NavigationProperty Name="roles1" Relationship="Self.FK__roleusers__roles__5441852A" FromRole="roleusers" ToRole="roles" />
+          <NavigationProperty Name="users1" Relationship="Self.FK__roleusers__users__534D60F1" FromRole="roleusers" ToRole="users" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="roleusers" Relationship="Self.FK__roleusers__users__534D60F1" FromRole="users" ToRole="roleusers" />
+        </EntityType>
+        <Association Name="FK__requests__status__59063A47">
+          <End Role="requeststatus" Type="Self.requeststatus" Multiplicity="1" />
+          <End Role="requests" Type="Self.requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="requeststatus">
+              <PropertyRef Name="statusid" />
+            </Principal>
+            <Dependent Role="requests">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__roleusers__roles__5441852A">
+          <End Role="roles" Type="Self.roles" Multiplicity="0..1" />
+          <End Role="roleusers" Type="Self.roleusers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="roleid" />
+            </Principal>
+            <Dependent Role="roleusers">
+              <PropertyRef Name="roles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__roleusers__users__534D60F1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="roleusers" Type="Self.roleusers" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="roleusers">
+              <PropertyRef Name="users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DiplomEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="catalogue" EntityType="Self.catalogue" />
+          <EntitySet Name="requests" EntityType="Self.requests" />
+          <EntitySet Name="requeststatus" EntityType="Self.requeststatus" />
+          <EntitySet Name="roles" EntityType="Self.roles" />
+          <EntitySet Name="roleusers" EntityType="Self.roleusers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <AssociationSet Name="FK__requests__status__59063A47" Association="Self.FK__requests__status__59063A47">
+            <End Role="requeststatus" EntitySet="requeststatus" />
+            <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__roleusers__roles__5441852A" Association="Self.FK__roleusers__roles__5441852A">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="roleusers" EntitySet="roleusers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__roleusers__users__534D60F1" Association="Self.FK__roleusers__users__534D60F1">
+            <End Role="users" EntitySet="users" />
+            <End Role="roleusers" EntitySet="roleusers" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DIPLOMModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DIPLOMModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="GetLogin" ReturnType="Collection(String)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="getuserlogin" ReturnType="Collection(String)">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddUser">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddRole">
+            <Parameter Name="username" Mode="In" Type="String" />
+            <Parameter Name="role" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetUserRole" ReturnType="Collection(Int32)">
+            <Parameter Name="username" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище DIPLOMModelContainer" CdmEntityContainer="DiplomEntities">
+          <EntitySetMapping Name="catalogue">
+            <EntityTypeMapping TypeName="DIPLOMModel.catalogue">
+              <MappingFragment StoreEntitySet="catalogue">
+                <ScalarProperty Name="catalogid" ColumnName="catalogid" />
+                <ScalarProperty Name="catalogname" ColumnName="catalogname" />
+                <ScalarProperty Name="catalogimagepath" ColumnName="catalogimagepath" />
+                <ScalarProperty Name="catalogdesc" ColumnName="catalogdesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="requests">
+            <EntityTypeMapping TypeName="DIPLOMModel.requests">
+              <MappingFragment StoreEntitySet="requests">
+                <ScalarProperty Name="requestid" ColumnName="requestid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="requestdesc" ColumnName="requestdesc" />
+                <ScalarProperty Name="requestfiles" ColumnName="requestfiles" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="requeststatus">
+            <EntityTypeMapping TypeName="DIPLOMModel.requeststatus">
+              <MappingFragment StoreEntitySet="requeststatus">
+                <ScalarProperty Name="statusid" ColumnName="statusid" />
+                <ScalarProperty Name="statusname" ColumnName="statusname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="DIPLOMModel.roles">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+                <ScalarProperty Name="rolename" ColumnName="rolename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roleusers">
+            <EntityTypeMapping TypeName="DIPLOMModel.roleusers">
+              <MappingFragment StoreEntitySet="roleusers">
+                <ScalarProperty Name="users" ColumnName="users" />
+                <ScalarProperty Name="roles" ColumnName="roles" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DIPLOMModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="DIPLOMModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище DIPLOMModel.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище DIPLOMModel.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище DIPLOMModel.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище DIPLOMModel.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DIPLOMModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище DIPLOMModel.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DIPLOMModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище DIPLOMModel.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище DIPLOMModel.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="GetLogin" FunctionName="Хранилище DIPLOMModel.GetLogin" />
+          <FunctionImportMapping FunctionImportName="getuserlogin" FunctionName="Хранилище DIPLOMModel.GetLogin" />
+          <FunctionImportMapping FunctionImportName="AddUser" FunctionName="Хранилище DIPLOMModel.AddUser" />
+          <FunctionImportMapping FunctionImportName="AddRole" FunctionName="Хранилище DIPLOMModel.AddRole" />
+          <FunctionImportMapping FunctionImportName="GetUserRole" FunctionName="Хранилище DIPLOMModel.GetUserRole" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,19 @@
+﻿
+@if (Global.logged)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+    <ul class="navbar-nav navbar-right">
+        <li><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
+    </ul>
+    }
+}
+else
+{
+<ul class="navbar-nav navbar-right">
+    <li>@Html.ActionLink("Выполнить вход", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+    <li>@Html.ActionLink("Зарегистрироваться", "Register", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+</ul>
+}

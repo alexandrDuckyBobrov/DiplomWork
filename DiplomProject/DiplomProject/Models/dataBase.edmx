@@ -14,6 +14,15 @@
           <Property Name="catalogimagepath" Type="nvarchar(max)" />
           <Property Name="catalogdesc" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="contacts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="users" Type="int" Nullable="false" />
+          <Property Name="phone" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="64" />
+        </EntityType>
         <EntityType Name="requests">
           <Key>
             <PropertyRef Name="requestid" />
@@ -22,6 +31,7 @@
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="requestdesc" Type="nvarchar(max)" Nullable="false" />
           <Property Name="requestfiles" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="users" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="requeststatus">
           <Key>
@@ -62,7 +72,19 @@
           <Property Name="login" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="64" Nullable="false" />
         </EntityType>
-        <Association Name="FK__requests__status__59063A47">
+        <Association Name="FK__contacts__users__787EE5A0">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="contacts" Type="Self.contacts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="contacts">
+              <PropertyRef Name="users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__requests__status__03F0984C">
           <End Role="requeststatus" Type="Self.requeststatus" Multiplicity="1" />
           <End Role="requests" Type="Self.requests" Multiplicity="*" />
           <ReferentialConstraint>
@@ -71,6 +93,18 @@
             </Principal>
             <Dependent Role="requests">
               <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__requests__users__04E4BC85">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="requests" Type="Self.requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="requests">
+              <PropertyRef Name="users" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -146,14 +180,23 @@
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище DIPLOMModelContainer">
           <EntitySet Name="catalogue" EntityType="Self.catalogue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="contacts" EntityType="Self.contacts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="requests" EntityType="Self.requests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="requeststatus" EntityType="Self.requeststatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="roles" EntityType="Self.roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="roleusers" EntityType="Self.roleusers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__requests__status__59063A47" Association="Self.FK__requests__status__59063A47">
+          <AssociationSet Name="FK__contacts__users__787EE5A0" Association="Self.FK__contacts__users__787EE5A0">
+            <End Role="users" EntitySet="users" />
+            <End Role="contacts" EntitySet="contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__requests__status__03F0984C" Association="Self.FK__requests__status__03F0984C">
             <End Role="requeststatus" EntitySet="requeststatus" />
+            <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__requests__users__04E4BC85" Association="Self.FK__requests__users__04E4BC85">
+            <End Role="users" EntitySet="users" />
             <End Role="requests" EntitySet="requests" />
           </AssociationSet>
           <AssociationSet Name="FK__roleusers__roles__5441852A" Association="Self.FK__roleusers__roles__5441852A">
@@ -187,6 +230,8 @@
           <Property Name="requestdesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="requestfiles" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="requeststatus" Relationship="Self.FK__requests__status__59063A47" FromRole="requests" ToRole="requeststatus" />
+          <Property Name="users" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="users1" Relationship="DIPLOMModel.FK__requests__users__04E4BC85" FromRole="requests" ToRole="users" />
         </EntityType>
         <EntityType Name="requeststatus">
           <Key>
@@ -231,6 +276,8 @@
           <Property Name="login" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="roleusers" Relationship="Self.FK__roleusers__users__534D60F1" FromRole="users" ToRole="roleusers" />
+          <NavigationProperty Name="contacts" Relationship="DIPLOMModel.FK__contacts__users__787EE5A0" FromRole="users" ToRole="contacts" />
+          <NavigationProperty Name="requests" Relationship="DIPLOMModel.FK__requests__users__04E4BC85" FromRole="users" ToRole="requests" />
         </EntityType>
         <Association Name="FK__requests__status__59063A47">
           <End Role="requeststatus" Type="Self.requeststatus" Multiplicity="1" />
@@ -335,8 +382,17 @@
             <Parameter Name="role" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetUserRole" ReturnType="Collection(Int32)">
-            <Parameter Name="username" Mode="In" Type="String" />
+          <Parameter Name="username" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="contacts" EntityType="DIPLOMModel.contacts" />
+          <AssociationSet Name="FK__contacts__users__787EE5A0" Association="DIPLOMModel.FK__contacts__users__787EE5A0">
+            <End Role="users" EntitySet="users" />
+            <End Role="contacts" EntitySet="contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__requests__users__04E4BC85" Association="DIPLOMModel.FK__requests__users__04E4BC85">
+            <End Role="users" EntitySet="users" />
+            <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -349,6 +405,40 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="contacts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="users" Type="Int32" Nullable="false" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users1" Relationship="DIPLOMModel.FK__contacts__users__787EE5A0" FromRole="contacts" ToRole="users" />
+        </EntityType>
+        <Association Name="FK__contacts__users__787EE5A0">
+          <End Type="DIPLOMModel.users" Role="users" Multiplicity="1" />
+          <End Type="DIPLOMModel.contacts" Role="contacts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="contacts">
+              <PropertyRef Name="users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__requests__users__04E4BC85">
+          <End Type="DIPLOMModel.users" Role="users" Multiplicity="1" />
+          <End Type="DIPLOMModel.requests" Role="requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="requests">
+              <PropertyRef Name="users" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -368,6 +458,7 @@
           <EntitySetMapping Name="requests">
             <EntityTypeMapping TypeName="DIPLOMModel.requests">
               <MappingFragment StoreEntitySet="requests">
+                <ScalarProperty Name="users" ColumnName="users" />
                 <ScalarProperty Name="requestid" ColumnName="requestid" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="requestdesc" ColumnName="requestdesc" />
@@ -448,6 +539,16 @@
           <FunctionImportMapping FunctionImportName="AddUser" FunctionName="Хранилище DIPLOMModel.AddUser" />
           <FunctionImportMapping FunctionImportName="AddRole" FunctionName="Хранилище DIPLOMModel.AddRole" />
           <FunctionImportMapping FunctionImportName="GetUserRole" FunctionName="Хранилище DIPLOMModel.GetUserRole" />
+          <EntitySetMapping Name="contacts">
+            <EntityTypeMapping TypeName="DIPLOMModel.contacts">
+              <MappingFragment StoreEntitySet="contacts">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="users" ColumnName="users" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

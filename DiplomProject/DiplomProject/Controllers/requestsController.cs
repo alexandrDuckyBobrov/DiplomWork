@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -40,6 +41,7 @@ namespace DiplomProject.Controllers
         public ActionResult Create(HttpPostedFileBase upload)
         {
             ViewBag.status = new SelectList(db.requeststatus, "statusid", "statusname");
+
             return View();
         }
 
@@ -48,24 +50,28 @@ namespace DiplomProject.Controllers
         // сведения см. в разделе https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "requestid,status,requestdesc,requestfiles")] requests requests, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "requestid,status,requestdesc,requestfiles,users")] requests requests, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
-                string filePath;
+                string fileName, filePath, fileExtension;
+
                 if (upload != null)
                 {
-                    // получаем имя файла
-                    string fileName = System.IO.Path.GetFileName(upload.FileName);
-                    // сохраняем файл в папку Files в проекте
+                    fileExtension = System.IO.Path.GetExtension(upload.FileName);
+                    fileName = "attachement_" + db.requests.Count() + Path.GetExtension(upload.FileName);
                     filePath = "~/files/" + fileName;
-                    requests.requestfiles = filePath;
                     upload.SaveAs(Server.MapPath(filePath));
                 }
-                requests.requeststatus = db.requeststatus.Find(1);
+                else
+                {
+                    fileName = string.Empty;
+                }
+                requests.status = 2;
+                requests.users = AccountManager.Id;
+                requests.requestfiles = fileName;
                 db.requests.Add(requests);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
             ViewBag.status = new SelectList(db.requeststatus, "statusid", "statusname", requests.status);
@@ -93,16 +99,30 @@ namespace DiplomProject.Controllers
         // сведения см. в разделе https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "requestid,status,requestdesc,requestfiles")] requests requests)
+        public ActionResult Edit(int id, int status)
         {
+            //if (ModelState.IsValid)
+            //{
+            //    db.Entry(requests).State = EntityState.Modified;
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            var requestToUpdate = db.requests.Find(id);
+            if (requestToUpdate == null)
+            {
+                return HttpNotFound(id.ToString());
+            }
+
+            // Обновляем только статус (или другие разрешенные поля)
+            requestToUpdate.status = status;
+
             if (ModelState.IsValid)
             {
-                db.Entry(requests).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.status = new SelectList(db.requeststatus, "statusid", "statusname", requests.status);
-            return View(requests);
+            ViewBag.status = new SelectList(db.requeststatus, "statusid", "statusname", requestToUpdate);
+            return View(requestToUpdate);
         }
 
         // GET: requests/Delete/5

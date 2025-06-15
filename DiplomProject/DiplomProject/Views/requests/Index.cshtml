@@ -1,14 +1,8 @@
 ﻿@model IEnumerable<DiplomProject.Models.requests>
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Заявки";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<h2>Заявки</h2>
 <table class="table">
     <tr>
         <th>
@@ -20,26 +14,36 @@
         <th>
             @Html.DisplayNameFor(model => model.requeststatus.statusname)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.users1.login)
+        </th>
         <th></th>
     </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.requestdesc)
+            </td>
+            <td>
+                @if (item.requestfiles != string.Empty)
+                {
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.requestdesc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.requestfiles)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.requeststatus.statusname)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.requestid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.requestid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.requestid })
-        </td>
-    </tr>
-}
+                    <a href=../files/@item.requestfiles>@item.requestfiles</a>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requeststatus.statusname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.users1.login)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "Edit", new { id = item.requestid }) |
+                @Html.ActionLink("Подробнее", "Details", new { id = item.requestid }) |
+                @Html.ActionLink("Удалить", "Delete", new { id = item.requestid })
+            </td>
+        </tr>
+    }
 
 </table>

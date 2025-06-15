@@ -1,43 +1,78 @@
 ﻿@model IEnumerable<DiplomProject.Models.catalogue>
 
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Главная";
 }
 
-<h2>Index</h2>
+<h2>Лучшая мастерская по изготовлению мебели на заказ!</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.catalogid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.catalogname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.catalogimagepath)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.catalogdesc)
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.catalogid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.catalogname)
-            </td>
-            <td>
-                <img src=@item.catalogimagepath alt=@item.catalogname />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.catalogdesc)
-            </td>
-        </tr>
-    }
+                @foreach (var item in Model)
+                {
+                    if (item.Equals(Model.First()))
+                    {
 
-</table>
+                        <div class="carousel-item active">
+                            <img src=~/@item.catalogimagepath class="d-block w-100" alt=~/@item.catalogimagepath />
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@item.catalogname</h5>
+                                <p>@item.catalogdesc</p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img src=~/@item.catalogimagepath class="d-block w-100" alt=~/@item.catalogimagepath>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>@item.catalogname</h5>
+                                <p>@item.catalogdesc</p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <p>
+            <h2>Добро пожаловать в мир уникальной мебели!</h2><br />
+            Ваш дом — это отражение вашего стиля, и каждая деталь в нем должна быть идеальной. Мы создаем мебель, которая полностью соответствует вашим желаниям: от дизайна до материалов и функциональности.
+            <br /><br />
+            Почему выбирают нас?<br />
+            ✔ Мебель по вашим эскизам – реализуем любые идеи, даже самые смелые.<br />
+            ✔ Качественные материалы – используем только проверенное сырье: натуральное дерево, металл, эко-кожу.<br />
+            ✔ Полный цикл производства – от проектирования до доставки и сборки.<br />
+            ✔ Гарантия 5 лет – уверены в качестве нашей продукции.<br />
+            <br /><br />
+            Хотите мебель своей мечты?<br />
+            🔹 Оставьте заявку онлайн – наш дизайнер свяжется с вами для уточнения деталей.<br />
+            🔹 Пришлите эскиз – мы подготовим 3D-визуализацию бесплатно.<br />
+            🔹 Получите готовый проект – согласуем все нюансы перед производством.<br />
+            <br /><br />
+            Создайте свой идеальный интерьер вместе с нами!<br />
+        </p>
+        @if (!Global.Logged)
+        {
+            @Html.ActionLink("Зарегистрироваться", "Register", "Account");
+
+        }
+    </div>
+</div>

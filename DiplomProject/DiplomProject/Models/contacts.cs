@@ -12,15 +12,13 @@ namespace DiplomProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class requests
+    public partial class contacts
     {
-        public int requestid { get; set; }
-        public int status { get; set; }
-        public string requestdesc { get; set; }
-        public string requestfiles { get; set; }
+        public int id { get; set; }
         public int users { get; set; }
+        public string phone { get; set; }
+        public string email { get; set; }
     
-        public virtual requeststatus requeststatus { get; set; }
         public virtual users users1 { get; set; }
     }
 }

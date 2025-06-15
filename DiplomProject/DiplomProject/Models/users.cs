@@ -14,10 +14,21 @@ namespace DiplomProject.Models
     
     public partial class users
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public users()
+        {
+            this.contacts = new HashSet<contacts>();
+            this.requests = new HashSet<requests>();
+        }
+    
         public int userid { get; set; }
         public string login { get; set; }
         public string password { get; set; }
     
         public virtual roleusers roleusers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<contacts> contacts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<requests> requests { get; set; }
     }
 }

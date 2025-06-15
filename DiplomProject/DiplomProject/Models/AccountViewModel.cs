@@ -30,6 +30,13 @@ namespace DiplomProject.Models
         public string Login { get; set; }
 
         [Required]
+        [Display(Name = "Номер телефона")]
+        public string Phone { get; set; }
+
+        [Display(Name = "EMail")]
+        public string EMail { get; set; }
+
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Пароль")]
         public string Password { get; set; }

@@ -34,17 +34,13 @@
             @Html.DisplayFor(model => model.requeststatus.statusname)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.users1.login)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.users1.login)
-        </dd>
-
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Изменить", "Edit", new { id = Model.requestid }) |
-    @Html.ActionLink("Назад", "Index")
+    @if(Model.status == 2)
+    {
+        @Html.ActionLink("Редактировать", "Edit", new { id = Model.requestid }) @Html.Raw(" | ")
+
+    }
+    @Html.ActionLink("Назад", "IndexUser")
 </p>

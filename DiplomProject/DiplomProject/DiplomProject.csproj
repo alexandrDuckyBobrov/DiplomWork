@@ -130,6 +130,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminPane.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\requestsController.cs" />
     <Compile Include="Controllers\usersController.cs" />
@@ -141,6 +142,10 @@
     <Compile Include="Models\catalogue.cs">
       <DependentUpon>dataBase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\contacts.cs">
+      <DependentUpon>dataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\contactsController.cs" />
     <Compile Include="Models\dataBase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -156,12 +161,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dataBase.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Metadata.cs" />
+    <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="Models\requests.cs">
       <DependentUpon>dataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\requeststatus.cs">
       <DependentUpon>dataBase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RequestsViewModel.cs" />
     <Compile Include="Models\roles.cs">
       <DependentUpon>dataBase.tt</DependentUpon>
     </Compile>
@@ -199,6 +207,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\custom.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -250,8 +259,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\requests\Create.cshtml" />
     <Content Include="Views\requests\Delete.cshtml" />
@@ -269,10 +276,19 @@
     <Content Include="Views\Home\IndexUser.cshtml" />
     <Content Include="Views\Home\IndexAdmin.cshtml" />
     <Content Include="Views\Home\IndexManager.cshtml" />
+    <Content Include="Views\Home\Delete.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Home\DeleteManager.cshtml" />
+    <Content Include="Views\Home\DetailsManager.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\EditManager.cshtml" />
+    <Content Include="Views\contacts\Details.cshtml" />
+    <Content Include="Views\contacts\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="files\" />
+    <Folder Include="Views\AdminPane\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

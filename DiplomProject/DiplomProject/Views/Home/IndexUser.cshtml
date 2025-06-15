@@ -1,7 +1,60 @@
-﻿
+﻿@model IEnumerable<DiplomProject.Models.requests>
 @{
-    ViewBag.Title = "IndexUser";
+    ViewBag.Title = "Личный кабинет";
 }
 
-<h2>IndexUser</h2>
+<h2>Личный кабинет @AccountManager.Username</h2>
 
+@Html.ActionLink("Контакты", "Details", "contacts", new { user = AccountManager.Id }, null)
+
+@Html.ActionLink("Оставить заявку", "Create", "requests")
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.requestdesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requestfiles)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requeststatus.statusname)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.requestdesc)
+            </td>
+            <td>
+                @if (item.requestfiles != string.Empty)
+                {
+
+                    <a href=../files/@item.requestfiles>@item.requestfiles</a>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requeststatus.statusname)
+            </td>
+            <td>
+                @if (item.status == 2)
+                {
+                    @Html.ActionLink("Изменить", "Edit", new { id = item.requestid })@Html.Raw(" | ")
+                    @Html.ActionLink("Подробнее", "Details", new { id = item.requestid }) @Html.Raw(" | ")
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.requestid })
+                }
+                else
+                {
+                    @Html.ActionLink("Подробнее", "Details", new { id = item.requestid })
+
+                }
+            </td>
+        </tr>
+    }
+
+</table>

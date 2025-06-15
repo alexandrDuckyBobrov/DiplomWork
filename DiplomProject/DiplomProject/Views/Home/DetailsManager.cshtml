@@ -1,4 +1,4 @@
-﻿@model DiplomProject.Models.requests
+﻿@model DiplomProject.Models.RequestsViewModel
 
 @{
     ViewBag.Title = "Подробнее";
@@ -35,16 +35,29 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.users1.login)
+            @Html.DisplayNameFor(model => model.userlogin)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.users1.login)
+            @Html.DisplayFor(model => model.userlogin)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Изменить", "Edit", new { id = Model.requestid }) |
-    @Html.ActionLink("Назад", "Index")
+    @Html.ActionLink("Изменить", "EditManager", new { id = Model.requestid }) |
+    @Html.ActionLink("Назад", "IndexManager")
 </p>

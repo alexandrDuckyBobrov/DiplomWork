@@ -1,7 +1,12 @@
 ﻿
 @{
-    ViewBag.Title = "IndexAdmin";
+    ViewBag.Title = "Личный кабинет";
 }
 
-<h2>IndexAdmin</h2>
+<h2>Личный кабинет @AccountManager.Username</h2>
+@AccountManager.Id
+@Html.ActionLink("Пользователи", "Index", "users")
+@Html.ActionLink("Заявки", "Index", "requests")
 
+
+@AccountManager.Role

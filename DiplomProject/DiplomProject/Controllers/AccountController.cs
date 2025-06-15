@@ -1,8 +1,10 @@
 ﻿using DiplomProject.Models;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 
 namespace DiplomProject
@@ -12,8 +14,6 @@ namespace DiplomProject
         DiplomEntities DBTest = new DiplomEntities();
         // GET: Account
         [AllowAnonymous]
-
-
         public ActionResult Register(string returnUrl)
         {
             try
@@ -40,6 +40,19 @@ namespace DiplomProject
                 if (ModelState.IsValid)
                 {
                     DBTest.AddUser(model.Login, model.Password);
+                    int id = (from p in DBTest.users
+                              where p.login.Equals(model.Login)
+                              select p.userid).Single();
+                    contacts contact = new contacts
+                    {
+                        users = id,
+                        phone = model.Phone,
+                        email = model.EMail
+                    };
+                    DBTest.contacts.Add(contact);
+                    DBTest.SaveChanges();
+
+
                     return this.RedirectToAction("Login", "Account");
                 }
             }
@@ -69,10 +82,6 @@ namespace DiplomProject
         }
 
         public int? status;
-
-        
-
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -86,8 +95,40 @@ namespace DiplomProject
                     var loginInfo = this.DBTest.GetLogin(model.Login, model.Password).ToList();
                     if (loginInfo != null && loginInfo.Count() > 0)
                     {
-                        Global.logged = true;
-                        return this.RedirectToAction("Index", "events1");
+                        int id = (from p in DBTest.users
+                                  where p.login.Equals(model.Login)
+                                  select p.userid).Single();
+                        int? role;
+                        try
+                        {
+                            role = (from q in DBTest.users join p in DBTest.roleusers on q.userid equals p.users where q.login.Equals(model.Login) select p.roles).Single();
+                        }
+                        catch
+                        {
+                            // Если вызвано исключение - роль равна null
+                            role = null;
+                        }
+                        string login = model.Login;
+
+                        AccountManager.Login(id, login, role);
+
+                        string page = "IndexUser";
+                        try
+                        {
+                            switch (role)
+                            {
+                                case 1: page = "IndexAdmin"; break;
+                                case 2: page = "IndexManager"; break;
+                            }
+
+                        }
+                        catch
+                        {
+                            page = "IndexUser";
+                            ViewBag.Message = "You have no role";
+                        }
+
+                        return this.RedirectToAction(page, "Home");
                     }
                     else
                     {
@@ -105,7 +146,7 @@ namespace DiplomProject
         }
         public ActionResult LogOff()
         {
-            Global.logged = false;
+            AccountManager.Logout();
             return this.RedirectToAction("Index", "Home");
         }
 

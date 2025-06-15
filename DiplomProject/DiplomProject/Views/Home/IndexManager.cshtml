@@ -1,7 +1,62 @@
-﻿
+﻿@model IEnumerable<DiplomProject.Models.RequestsViewModel>
 @{
-    ViewBag.Title = "IndexManager";
+    ViewBag.Title = "Личный кабинет";
 }
 
-<h2>IndexManager</h2>
+<h2>Рассмотрение заявок @AccountManager.Username</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.requestdesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requestfiles)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requeststatus.statusname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.userlogin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.requestdesc)
+            </td>
+            <td>
+                @if (item.requestfiles != string.Empty)
+                {
 
+                    <a href=../files/@item.requestfiles>@item.requestfiles</a>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requeststatus.statusname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.userlogin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>3
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.ActionLink("Изменить", "EditManager", new { id = item.requestid }) |
+                @Html.ActionLink("Подробнее", "DetailsManager", new { id = item.requestid }) |
+                @Html.ActionLink("Удалить", "DeleteManager", new { id = item.requestid })
+            </td>
+        </tr>
+    }
+
+</table>

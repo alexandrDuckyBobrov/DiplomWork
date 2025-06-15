@@ -9,7 +9,7 @@
 <main aria-labelledby="title">
     <h2 id="title">@ViewBag.Title.</h2>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-14">
             <section id="loginForm">
                 @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
                 {
@@ -23,14 +23,28 @@
                             @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Login, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div><br />
+                    <div class="row">
+                        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div><br />
+                    <div class="row">
+                        @Html.LabelFor(m => m.EMail, new { @class = "col-md-2 col-form-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.EMail, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.EMail, "", new { @class = "text-danger" })
+                        </div>
+                    </div><br />
                     <div class="row">
                         @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
                         <div class="col-md-10">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div><br />
                     <div class="row">
                         @Html.LabelFor(m => m.PasswordConfirm, new { @class = "col-md-2 col-form-label" })
                         <div class="col-md-10">
@@ -40,7 +54,7 @@
                     </div>
                     <div class="row">
                         <div class="offset-md-2 col-md-10">
-                            <input type="submit" value="Выполнить вход" class="btn btn-outline-dark" />
+                            <input type="submit" value="Зарегистрироваться" class="btn btn-outline-dark" />
                         </div>
                     </div>
                 }

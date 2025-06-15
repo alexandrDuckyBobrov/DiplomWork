@@ -15,6 +15,9 @@
         <AssociationConnector Association="DIPLOMModel.FK__requests__status__59063A47" ManuallyRouted="false" />
         <AssociationConnector Association="DIPLOMModel.FK__roleusers__roles__5441852A" ManuallyRouted="false" />
         <AssociationConnector Association="DIPLOMModel.FK__roleusers__users__534D60F1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DIPLOMModel.contacts" Width="1.5" PointX="3" PointY="8" />
+        <AssociationConnector Association="DIPLOMModel.FK__contacts__users__787EE5A0" />
+        <AssociationConnector Association="DIPLOMModel.FK__requests__users__04E4BC85" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

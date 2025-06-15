@@ -18,6 +18,11 @@ namespace DiplomProject
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "ContactsDetails",
+                url: "contacts/Details/{user}",
+                defaults: new { controller = "contacts", action = "Details" }
+            );
         }
     }
 }

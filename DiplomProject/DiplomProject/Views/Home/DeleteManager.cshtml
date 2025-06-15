@@ -1,11 +1,12 @@
-﻿@model DiplomProject.Models.requests
+﻿@model DiplomProject.Models.RequestsViewModel
 
 @{
-    ViewBag.Title = "Подробнее";
+    ViewBag.Title = "Удалить";
 }
 
-<h2>Подробнее</h2>
+<h2>Удалить</h2>
 
+<h3>Вы уверены что хотите удалить это?</h3>
 <div>
     <h4>Заявка</h4>
     <hr />
@@ -34,17 +35,14 @@
             @Html.DisplayFor(model => model.requeststatus.statusname)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.users1.login)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.users1.login)
-        </dd>
-
-
     </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Назад", "Index")
+        </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Изменить", "Edit", new { id = Model.requestid }) |
-    @Html.ActionLink("Назад", "Index")
-</p>

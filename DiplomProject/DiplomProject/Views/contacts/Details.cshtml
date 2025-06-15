@@ -1,0 +1,47 @@
+﻿@model DiplomProject.Models.contacts
+
+@{
+    ViewBag.Title = "Контакты";
+}
+
+<h2>Контакты</h2>
+
+<div>
+    <h4>Контактная информация</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.users1.login)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.users1.login)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Изменить", "Edit", new { id = Model.id }) |
+    @switch (AccountManager.Role)
+    {
+        case 1:@Html.ActionLink("Назад", "IndexAdmin"); break;
+    case 2: @Html.ActionLink("Назад", "IndexManager"); break;
+case null: @Html.ActionLink("Назад", "IndexUser"); break;
+}
+</p>

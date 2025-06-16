@@ -43,14 +43,7 @@ namespace DiplomProject
                     int id = (from p in DBTest.users
                               where p.login.Equals(model.Login)
                               select p.userid).Single();
-                    contacts contact = new contacts
-                    {
-                        users = id,
-                        phone = model.Phone,
-                        email = model.EMail
-                    };
-                    DBTest.contacts.Add(contact);
-                    DBTest.SaveChanges();
+                    DBTest.AddContacts(id, model.Phone, model.EMail);
 
 
                     return this.RedirectToAction("Login", "Account");

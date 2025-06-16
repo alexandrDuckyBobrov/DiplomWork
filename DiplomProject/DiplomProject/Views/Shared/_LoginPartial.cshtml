@@ -1,18 +1,19 @@
 ﻿
-@if (Global.Logged)
-{
-    switch (AccountManager.Role)
+    @if (Global.Logged)
     {
-        case 1: @Html.ActionLink("Личный кабинет", "IndexAdmin", "Home", new { area = "" }, new { @class = "navbar-nav navbar-right" }); break;
-        case 2: @Html.ActionLink("Личный кабинет", "IndexManager", "Home", new { area = "" }, new { @class = "navbar-nav navbar-right" }); break;
-        case null: @Html.ActionLink("Личный кабинет", "IndexUser", "Home", new { area = "" }, new { @class = "navbar-nav navbar-right" }); break;
-    }
-
 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 {
 @Html.AntiForgeryToken()
 
 <ul class="navbar-nav navbar-right">
+    <li>
+    @switch (AccountManager.Role)
+    {
+        case 1:@Html.ActionLink("Личный кабинет", "IndexAdmin", "Home", new { area = "" }, new { @class = "nav-link" }); break;
+    case 2: @Html.ActionLink("Личный кабинет", "IndexManager", "Home", new { area = "" }, new { @class = "nav-link" }); break;
+case null: @Html.ActionLink("Личный кабинет", "IndexUser", "Home", new { area = "" }, new { @class = "nav-link" }); break;
+}
+</li>
     <li><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
 </ul>
 }

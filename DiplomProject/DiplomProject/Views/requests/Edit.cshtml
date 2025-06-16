@@ -18,7 +18,7 @@
     @Html.HiddenFor(model => model.requestid)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.status, "status", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.requeststatus, "Статус", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownList("status", null, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
@@ -36,18 +36,17 @@
     <div class="form-group">
         @Html.LabelFor(model => model.requestfiles, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.requestfiles, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.requestfiles, "", new { @class = "text-danger" })
+            <a href=../../files/@Html.DisplayFor(model => model.requestfiles)>@Html.DisplayFor(model => model.requestfiles)</a>
         </div>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         @Html.LabelFor(model => model.users1.login, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Model.users1.login
             @Html.EditorFor(model => model.users1.login, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.users1.login, "", new { @class = "text-danger" })
         </div>
-    </div>
+    </div>*@
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Сохранить" class="btn btn-default" />
@@ -57,7 +56,7 @@
 }
 
 <div>
-    @Html.ActionLink("Назад", "Index")
+    @Html.ActionLink("Назад", "Index", "Home")
 </div>
 
 @section Scripts {

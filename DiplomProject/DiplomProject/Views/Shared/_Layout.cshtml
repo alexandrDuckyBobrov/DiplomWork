@@ -7,12 +7,14 @@
     <title>@ViewBag.Title - Веб сайт мебельных проектов</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Веб сайт мебельных проектов", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" });
+            @Html.ActionLink("Веб сайт мебельных проектов", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Переключить навигацию" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">

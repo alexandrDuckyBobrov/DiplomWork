@@ -3,5 +3,19 @@
     color: #000;
 }
 body-content{
-    background-color: #fff;
+    background-color: #000fff;
+}
+.table{
+    color: #000;
+}
+.navbar {
+    color: rgba(255, 255, 255, 0.55);
+}
+.bg-dark {
+    background-color: #0e3300 !important;
+}
+.navbar-brand {
+    font-family: "Tenor Sans", sans-serif;
+    font-weight: 550;
+    font-style: normal;
 }

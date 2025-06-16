@@ -23,7 +23,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.requestfiles)
+            <a href=../../files/@Html.DisplayFor(model => model.requestfiles)>@Html.DisplayFor(model => model.requestfiles)</a>
         </dd>
 
         <dt>
@@ -46,5 +46,5 @@
 </div>
 <p>
     @Html.ActionLink("Изменить", "Edit", new { id = Model.requestid }) |
-    @Html.ActionLink("Назад", "Index")
+    @Html.ActionLink("Назад", "IndexUser", "Home")
 </p>

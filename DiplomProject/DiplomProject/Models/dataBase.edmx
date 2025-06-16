@@ -132,6 +132,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="AddContacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="userid" Type="int" Mode="In" />
+          <Parameter Name="phone" Type="nvarchar" Mode="In" />
+          <Parameter Name="email" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="AddRole" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="username" Type="nvarchar" Mode="In" />
           <Parameter Name="role" Type="int" Mode="In" />
@@ -393,6 +398,11 @@
             <End Role="users" EntitySet="users" />
             <End Role="requests" EntitySet="requests" />
           </AssociationSet>
+          <FunctionImport Name="AddContacts">
+            <Parameter Name="userid" Mode="In" Type="Int32" />
+            <Parameter Name="phone" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -549,6 +559,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddContacts" FunctionName="Хранилище DIPLOMModel.AddContacts" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
